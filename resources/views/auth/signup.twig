@@ -152,10 +152,20 @@ body, html {
          <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
          <p id="profile-name" class="profile-name-card"></p>
          <form class="form-signin" action="{{ path_for('auth.signup') }}" method="post">
+
              <span id="reauth-email" class="reauth-email"></span>
-             <input type="text" id="name" name="name" class="form-control" placeholder="Full Name" required autofocus>
-             <input type="email" id="email" name="email" class="form-control" placeholder="Email address" required autofocus>
-             <input type="password" id="password" name="password" class="form-control" placeholder="Password" required autofocus>
+             <input type="text" id="name" name="name" class="form-control" placeholder="Full Name" value="{{creador}}">
+             <div class="">
+               {{ errors.name | first }}
+             </div>
+             <input type="text" id="email" name="email" class="form-control" placeholder="Email address">
+             <div class="">
+               {{ errors.email | first }}
+             </div>
+             <input type="password" id="password" name="password" class="form-control" placeholder="Password">
+             <div class="">
+               {{ errors.password | first}}
+             </div>
              <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign Up</button>
          </form><!-- /form -->
      </div><!-- /card-container -->

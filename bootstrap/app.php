@@ -33,6 +33,10 @@ $container['db'] = function($container)  use ($capsule) {
   return $capsule;
 };
 
+$container['validator'] = function($container) {
+  return new App\Validation\Validator;
+};
+
 $container['view'] = function($container){
   $view = new \Slim\Views\Twig(__DIR__.'/../resources/views', [
     'cache' => false
@@ -53,6 +57,8 @@ $container['HomeController'] = function($container){
 $container['AuthController'] = function($container){
   return new \App\Auth\AuthController($container);
 };
+
+$app->add(new \App\Middleware\ValidationErrorsMiddleware($container));
 
 require __DIR__ . '/../app/routes.php';
 
