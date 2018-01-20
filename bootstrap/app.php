@@ -1,5 +1,7 @@
 <?php
 
+use Respect\Validation\Validator as v;
+
 session_start();
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -29,9 +31,7 @@ $capsule->addConnection($container['settings']['db']);
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
 
-$container['db'] = function($container)  use ($capsule) {
-  return $capsule;
-};
+$container['db'] = $capsule;
 
 $container['validator'] = function($container) {
   return new App\Validation\Validator;
@@ -58,10 +58,19 @@ $container['AuthController'] = function($container){
   return new \App\Auth\AuthController($container);
 };
 
+$container['csrf'] = function($container){
+  return new \Slim\Csrf\Guard;
+};
+
 $app->add(new \App\Middleware\ValidationErrorsMiddleware($container));
+//$app->add(new \App\Middleware\OldInputMiddleware($container));
+//$app->add(new \App\Middleware\CsrfMiddleware($container));
+
+$app->add($container->csrf);
+
+v::with('App\\Validation\\Rules\\');
 
 require __DIR__ . '/../app/routes.php';
-
 
 
 ?>

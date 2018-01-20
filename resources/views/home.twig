@@ -4,10 +4,6 @@
 
   <h1>Hey guys !</h1>
 
-{% endblock %}
-
-{% block subfooter %}
-
-  <h3>Hola soy un subfooter</h3>
+  {{ csrf.field | raw }}
 
 {% endblock %}

@@ -15,6 +15,6 @@
 
 $app->get('/', 'HomeController:index');
 
-$app->get('/auth/signup', 'AuthController:getSignUp')->setName('auth.signup');
+$app->get('/auth/signup', 'AuthController:getSignUp')->setName('auth.signup')->add(new \App\Middleware\CsrfMiddleware($container))->add(new \App\Middleware\OldInputMiddleware($container));
 
-$app->post('/auth/signup', 'AuthController:postSignUp');
+$app->post('/auth/signup', 'AuthController:postSignUp')->add(new \App\Middleware\OldInputMiddleware($container));
