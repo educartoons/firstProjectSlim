@@ -7,6 +7,7 @@ session_start();
 require __DIR__ . '/../vendor/autoload.php';
 
 use \Slim\Views\TwigExtension;
+use \App\Exception\NotFoundHandler;
 
 $app = new \Slim\App([
   'settings' => [
@@ -37,6 +38,14 @@ $container['validator'] = function($container) {
   return new App\Validation\Validator;
 };
 
+$container['auth'] = function($container){
+  return new \App\Auth\Auth;
+};
+
+$container['flash'] = function ($container) {
+    return new \Slim\Flash\Messages();
+};
+
 $container['view'] = function($container){
   $view = new \Slim\Views\Twig(__DIR__.'/../resources/views', [
     'cache' => false
@@ -46,6 +55,13 @@ $container['view'] = function($container){
     $container->router,
     $container->request->getUri()
   ));
+
+  $view->getEnvironment()->addGlobal('auth', [
+    'check' => $container->auth->check(),
+    'user' => $container->auth->user(),
+  ]);
+
+  $view->getEnvironment()->addGlobal('flash', $container->flash);
 
   return $view;
 };
@@ -61,6 +77,13 @@ $container['AuthController'] = function($container){
 $container['csrf'] = function($container){
   return new \Slim\Csrf\Guard;
 };
+
+$container['notFoundHandler'] = function($container){
+  return new NotFoundHandler($container->get('view'), function($request, $response) use ($container){
+    return $container['response']->withStatus(404);
+  });
+};
+
 
 $app->add(new \App\Middleware\ValidationErrorsMiddleware($container));
 //$app->add(new \App\Middleware\OldInputMiddleware($container));

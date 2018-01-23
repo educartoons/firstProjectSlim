@@ -1,0 +1,37 @@
+
+<div class="row" style="padding-top: 3em;">
+  <div class="container">
+
+    {% if flash.getMessage('success') %}
+
+    <div class="alert alert-success">
+      <strong>Success!</strong> {{ flash.getFirstMessage('success') }}
+    </div>
+
+    {% endif %}
+
+    {% if flash.getMessage('warning') %}
+
+    <div class="alert alert-warning">
+      <strong>Warning!</strong> {{ flash.getFirstMessage('warning') }}
+    </div>
+
+    {% endif %}
+
+    {% if flash.getMessage('danger') %}
+
+    <div class="alert alert-danger">
+      {{ flash.getFirstMessage('danger') }}
+    </div>
+
+    {% endif %}
+
+
+    <!-- <div class="alert alert-info">
+      <strong>Info!</strong> Indicates a neutral informative change or action.
+    </div> -->
+
+
+
+  </div>
+</div>
